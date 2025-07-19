@@ -1,0 +1,35 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: 'database-pg'
+    restart: unless-stopped
+
+    env_file:
+      - .env
+
+    environment:
+      POSTGRES_DB: '${DB_NAME}'
+      POSTGRES_USER: '${DB_USERNAME}'
+      POSTGRES_PASSWORD: '${DB_PASSWORD}'
+
+    ports:
+      - '${DB_PORT}:5432'
+
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./infra/database/scripts/:/docker-entrypoint-initdb.d/:ro
+
+    networks:
+      - app_net
+
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d $POSTGRES_DB']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  db_data:
+
+networks:
+  app_net:
