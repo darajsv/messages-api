@@ -1,7 +1,6 @@
-import { CreateMessageRequestDTO } from '@modules/message/create/dtos/request.dto';
 import { randomUUID } from 'crypto';
 
-enum MessageStatus {
+export enum MessageStatus {
   SENT = 'sent',
   RECEIVED = 'received',
   READ = 'read',
@@ -14,15 +13,14 @@ export class Message {
   sentAt: Date;
   status: MessageStatus;
 
-  static newInstanceFromDTO(data: CreateMessageRequestDTO) {
-    return {
-      id: randomUUID(),
-      content: data.content,
-      sender: data.sender,
-      sentAt: new Date(),
-      status: MessageStatus.SENT,
-    };
+  constructor(content: string, sender: string) {
+    this.id = randomUUID();
+    this.content = content;
+    this.sender = sender;
+    this.sentAt = new Date();
+    this.status = MessageStatus.SENT;
   }
+
   static newInstanceFromDB(data: any): Message {
     return {
       id: data.id.S,
