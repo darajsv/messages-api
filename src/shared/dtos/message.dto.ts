@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { MessageStatus } from '@shared/modules/database/entities';
+import { MessageStatus } from '@shared/providers/database/entities';
 import { randomUUID } from 'crypto';
 
-export class CreateMessageResponseDTO {
+export class MessageDTO {
   @ApiProperty({ example: randomUUID() })
   id: string;
 
@@ -13,7 +13,7 @@ export class CreateMessageResponseDTO {
   sender: string;
 
   @ApiProperty()
-  sentAt: Date;
+  sentAt: string;
 
   @ApiProperty({ enum: MessageStatus })
   status: MessageStatus;

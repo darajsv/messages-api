@@ -10,24 +10,14 @@ export class Message {
   id: string;
   content: string;
   sender: string;
-  sentAt: Date;
+  sentAt: string;
   status: MessageStatus;
 
   constructor(content: string, sender: string) {
     this.id = randomUUID();
     this.content = content;
     this.sender = sender;
-    this.sentAt = new Date();
+    this.sentAt = new Date().toISOString();
     this.status = MessageStatus.SENT;
-  }
-
-  static newInstanceFromDB(data: any): Message {
-    return {
-      id: data.id.S,
-      content: data.content.S,
-      sender: data.content.S,
-      sentAt: new Date(Number(data.sentAt.N)),
-      status: data.status.S,
-    };
   }
 }

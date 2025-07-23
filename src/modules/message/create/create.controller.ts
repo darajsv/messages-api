@@ -3,7 +3,7 @@ import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateMessageService } from './create.service';
 import { CreateMessageRequestDTO } from './dtos/request.dto';
 import { API_TAGS } from '@shared/constants';
-import { CreateMessageResponseDTO } from './dtos/response.dto';
+import { MessageDTO } from '@shared/dtos/message.dto';
 
 @ApiTags(API_TAGS.MESSAGE)
 @Controller()
@@ -15,11 +15,9 @@ export class CreateMessageController {
   })
   @ApiCreatedResponse({
     description: 'Message created successfully',
-    type: CreateMessageResponseDTO,
+    type: MessageDTO,
   })
-  async handle(
-    @Body() body: CreateMessageRequestDTO,
-  ): Promise<CreateMessageResponseDTO> {
+  async handle(@Body() body: CreateMessageRequestDTO): Promise<MessageDTO> {
     return this.createMessageService.execute(body);
   }
 }
