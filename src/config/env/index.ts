@@ -6,4 +6,12 @@ export default () => ({
     NODE_ENV: process.env.NODE_ENV || 'development',
     API_BASE_PATH: process.env.API_BASE_PATH || '/api',
   },
+  database: {
+    region: process.env.DB_REGION || '',
+    endpoint: process.env.DB_ENDPOINT || 'http://localhost:8000',
+    credentials: {
+      accessKeyId: process.env.DB_ACCESS_KEY_ID || '',
+      secretAccessKey: process.env.DB_SECRET_ACCESS_KEY || '',
+    },
+  },
 });
