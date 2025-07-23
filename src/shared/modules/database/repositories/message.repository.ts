@@ -16,22 +16,8 @@ export class MessageRepository {
     this.client = this.connection;
   }
 
-  async findAll(): Promise<Message[]> {
-    const command = new ScanCommand({ TableName: this.tableName });
-
-    const response = await this.client.send(command);
-
-    if (response.Items) {
-      return response.Items.map((item) => ({
-        ...Message.newInstanceFromDB(item),
-      }));
-    }
-
-    return [];
-  }
-
-  async create(message: Message): Promise<Message> {
-    const itemObject: Record<string, AttributeValue> = {
+  private createItemObject(message: Message): Record<string, AttributeValue> {
+    return {
       id: {
         S: message.id,
       },
@@ -48,6 +34,24 @@ export class MessageRepository {
         S: message.status,
       },
     };
+  }
+
+  async findAll(): Promise<Message[]> {
+    const command = new ScanCommand({ TableName: this.tableName });
+
+    const response = await this.client.send(command);
+
+    if (response.Items) {
+      return response.Items.map((item) => ({
+        ...Message.newInstanceFromDB(item),
+      }));
+    }
+
+    return [];
+  }
+
+  async create(message: Message): Promise<Message> {
+    const itemObject = this.createItemObject(message);
 
     const command = new PutItemCommand({
       TableName: this.tableName,
