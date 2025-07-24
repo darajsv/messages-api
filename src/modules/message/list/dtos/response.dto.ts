@@ -8,7 +8,7 @@ export class ListMessageResponseDTO {
   @Expose()
   items: MessageDTO[];
 
-  @ApiProperty()
+  @ApiProperty({ example: 'base64' })
   @Expose()
   nextCursor: string | null;
 }

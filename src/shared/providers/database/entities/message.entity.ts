@@ -1,3 +1,4 @@
+import { formatYearMonth, toEpoch } from '@shared/utils';
 import { Exclude } from 'class-transformer';
 import { randomUUID } from 'crypto';
 
@@ -21,8 +22,8 @@ export class Message {
     this.id = randomUUID();
     this.content = content;
     this.sender = sender;
-    this.sentAt = new Date(date).getTime();
+    this.sentAt = toEpoch(date);
     this.status = MessageStatus.SENT;
-    this.sentMonth = new Date(date).toISOString().slice(0, 7);
+    this.sentMonth = formatYearMonth(date);
   }
 }
