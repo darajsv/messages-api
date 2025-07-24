@@ -5,6 +5,8 @@ import { DetailMessageController } from './detail/detail.controller';
 import { DetailMessageService } from './detail/detail.service';
 import { ListMessageController } from './list/list.controller';
 import { ListMessageService } from './list/list.service';
+import { PatchMessageStatusController } from './patch/patch.controller';
+import { PatchMessageStatusService } from './patch/patch.service';
 
 @Module({
   imports: [],
@@ -12,7 +14,13 @@ import { ListMessageService } from './list/list.service';
     CreateMessageController,
     DetailMessageController,
     ListMessageController,
+    PatchMessageStatusController,
   ],
-  providers: [CreateMessageService, DetailMessageService, ListMessageService],
+  providers: [
+    CreateMessageService,
+    DetailMessageService,
+    ListMessageService,
+    PatchMessageStatusService,
+  ],
 })
 export class MessageModule {}

@@ -6,6 +6,7 @@ import {
   PutCommand,
   QueryCommand,
   QueryCommandInput,
+  UpdateCommand,
 } from '@aws-sdk/lib-dynamodb';
 import { decodeCursor, encodeCursor, monthBuckets, toEpoch } from '@shared/utils';
 
@@ -127,5 +128,21 @@ export class MessageRepository {
     const nextCursor = Object.keys(cursorObj).length > 0 ? encodeCursor(cursorObj) : undefined;
 
     return { items: items as Message[], nextCursor };
+  }
+
+  async updateStatus(sender: string, sentAt: number, status: string): Promise<Message> {
+    const result = await this.client.send(
+      new UpdateCommand({
+        TableName: this.tableName,
+        Key: { sender, sentAt },
+        UpdateExpression: 'SET #st = :s',
+        ExpressionAttributeNames: { '#st': 'status' },
+        ExpressionAttributeValues: { ':s': status },
+        ConditionExpression: 'attribute_exists(id)',
+        ReturnValues: 'ALL_NEW',
+      }),
+    );
+
+    return result.Attributes as Message;
   }
 }
