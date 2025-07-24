@@ -5,7 +5,7 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { API_TAGS, notFound } from '@shared/constants';
+import { API_TAGS } from '@shared/constants';
 import { DetailMessageService } from './detail.service';
 import { MessageDTO } from '@shared/dtos/message.dto';
 import { ErrorDTO } from '@shared/dtos/error.dto';
