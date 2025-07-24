@@ -5,5 +5,7 @@
   "arrowParens": "always",
   "useTabs": false,
   "tabWidth": 2,
-  "semi": true
+  "semi": true,
+  "bracketSpacing": true,
+  "printWidth": 100
 }

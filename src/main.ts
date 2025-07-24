@@ -1,10 +1,14 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
-import { ValidationPipe, VersioningType } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  ValidationPipe,
+  VersioningType,
+} from '@nestjs/common';
 import env from '@config/env';
 import { SwaggerConfig } from '@config/swagger/swagger.config';
 import fastifyHelmet from '@fastify/helmet';
@@ -27,6 +31,12 @@ async function bootstrap() {
     new ValidationPipe({
       transform: true,
       whitelist: true,
+    }),
+  );
+
+  app.useGlobalInterceptors(
+    new ClassSerializerInterceptor(app.get(Reflector), {
+      excludeExtraneousValues: true,
     }),
   );
 

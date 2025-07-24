@@ -2,6 +2,7 @@ import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { notFound } from '@shared/constants';
 import { MessageDTO } from '@shared/dtos/message.dto';
 import { IDatabaseProviders } from '@shared/providers/database/interfaces';
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class DetailMessageService {
@@ -14,6 +15,6 @@ export class DetailMessageService {
       throw new NotFoundException(notFound('message'));
     }
 
-    return message;
+    return plainToInstance(MessageDTO, message);
   }
 }
