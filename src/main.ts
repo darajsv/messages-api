@@ -1,23 +1,14 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
-import {
-  FastifyAdapter,
-  NestFastifyApplication,
-} from '@nestjs/platform-fastify';
-import {
-  ClassSerializerInterceptor,
-  ValidationPipe,
-  VersioningType,
-} from '@nestjs/common';
+import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
+import { ClassSerializerInterceptor, ValidationPipe, VersioningType } from '@nestjs/common';
 import env from '@config/env';
 import { SwaggerConfig } from '@config/swagger/swagger.config';
 import fastifyHelmet from '@fastify/helmet';
+import { CorsConfig } from '@config/cors/cors.config';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestFastifyApplication>(
-    AppModule,
-    new FastifyAdapter(),
-  );
+  const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter());
 
   app.setGlobalPrefix(env().application.API_BASE_PATH);
   app.enableVersioning({ type: VersioningType.URI, defaultVersion: '1' });
@@ -39,6 +30,8 @@ async function bootstrap() {
       excludeExtraneousValues: true,
     }),
   );
+
+  app.enableCors(CorsConfig);
 
   await app.register(fastifyHelmet);
   await app.listen(env().application.PORT);

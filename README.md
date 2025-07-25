@@ -1,98 +1,146 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 📩 Messages API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+![Node.js](https://img.shields.io/badge/node-%3E%3D22.11.0-brightgreen)
+![npm](https://img.shields.io/badge/npm-%3E%3D10.9-blue)
+![DynamoDB](https://img.shields.io/badge/DynamoDB-local%20ready-orange)
+![License](https://img.shields.io/badge/license-MIT-lightgrey)
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Uma API em **NestJS** para gerenciamento de mensagens, com persistência em **Amazon DynamoDB** (ou DynamoDB Local via Docker) e documentação interativa gerada pelo **Swagger**.
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## ✨ Funcionalidades
 
-## Project setup
+- CRUD de mensagens
+- Paginação cursor-based
+- Health check e métricas
+- Documentação automática (**Swagger UI**)
+- Suporte a **CORS** restrito aos front-ends autorizados
 
-```bash
-$ npm install
-```
+---
 
-## Compile and run the project
+## 🖥️ Pré-requisitos
 
-```bash
-# development
-$ npm run start
+| Ferramenta              | Versão mínima                               |
+| ----------------------- | ------------------------------------------- |
+| Node.js                 | **22.11.0**                                 |
+| npm                     | **10.9**                                    |
+| Docker / Docker Compose | _Opcional_ — para executar o DynamoDB Local |
 
-# watch mode
-$ npm run start:dev
+---
 
-# production mode
-$ npm run start:prod
-```
+## 🚀 Primeiros passos
 
-## Run tests
+### 1. Instalar dependências
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm install
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### 2. (Opcional) Subir o DynamoDB Local
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+docker compose -f docker-compose.yml up -d --build
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### 3. Criar tabela e popular com dados de exemplo
 
-## Resources
+```bash
+npm run create:dynamodb-table
+npm run seed:messages
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+---
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+## 🏗️ Scripts NPM úteis
 
-## Support
+| Script       | Descrição                        |
+| ------------ | -------------------------------- |
+| `start`      | Inicia em **modo produção**      |
+| `start:dev`  | _Hot-reload_ com **ts-node-dev** |
+| `start:prod` | Build + execução em produção     |
+| `test`       | Testes unitários (`jest`)        |
+| `test:e2e`   | Testes end-to-end (`supertest`)  |
+| `test:cov`   | Relatório de cobertura           |
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+---
 
-## Stay in touch
+## 🔌 Variáveis de ambiente (exemplo)
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```env
+PORT=3000
+NODE_ENV=development
+API_BASE_PATH=/api
+CORS_ORIGINS=https://meu-frontend.com,https://outro-frontend.com
 
-## License
+DB_REGION=sa-east-1
+DB_ENDPOINT=http://localhost:8000
+DB_ACCESS_KEY_ID=
+DB_SECRET_ACCESS_KEY=
+```
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+---
+
+## 🛣️ Endpoints principais
+
+| Método  | Rota                            | Descrição                |
+| ------- | ------------------------------- | ------------------------ |
+| `POST`  | `/messages`                     | Criar nova mensagem      |
+| `GET`   | `/messages/:id`                 | Buscar por **ID**        |
+| `GET`   | `/messages?sender=`             | Listar por **remetente** |
+| `PATCH` | `/messages/:id/status`          | Atualizar **status**     |
+| `GET`   | `/messages?startDate=&endDate=` | Listar por **período**   |
+
+A documentação completa fica disponível em `/api/docs`.
+
+---
+
+## 🗄️ Modelagem de dados (DynamoDB)
+
+### Esquema da tabela `Messages`
+
+```text
+PK  = sender (HASH)
+SK  = sentAt (RANGE)
+
+GSI #1: IdIndex
+  - Partition key: id (HASH)
+
+GSI #2: SentDateIndex
+  - Partition key: sentMonth (HASH)
+  - Sort key: sentAt (RANGE)
+```
+
+| Campo       | Tipo | Observações                                           |
+| ----------- | ---- | ----------------------------------------------------- |
+| `sender`    | S    | Remetente; principal critério de consulta             |
+| `sentAt`    | N    | Epoch ms; permite ordenação cronológica               |
+| `id`        | S    | UUID da mensagem; indexado em **IdIndex**             |
+| `sentMonth` | S    | Ano-mês (`YYYY-MM`); particiona consultas por período |
+
+#### Decisões de design
+
+- **PK = `sender` + `sentAt`**  
+  O caso de uso mais frequente é listar mensagens de um remetente em ordem temporal.  
+  Ao combinar `sender` (HASH) e `sentAt` (RANGE) garantimos ordenação e ótima performance.
+
+- **GSI 1 — `IdIndex`**  
+  Busca direta por `id` (HASH only) para retornar rapidamente detalhes de uma mensagem específica, sem depender do remetente.
+
+- **GSI 2 — `SentDateIndex`**  
+  Para filtros por período, derivamos `sentMonth` (ex.: `2025-07`) e o usamos como HASH, mantendo `sentAt` como RANGE.  
+  Dessa forma:
+  1. As consultas de intervalo (`BETWEEN :from AND :to`) continuam eficientes.
+  2. Evitamos hot partitions distribuindo itens por mês.
+
+---
+
+## 🔄 Fluxo da API
+
+![Diagrama de fluxo da Messages API](docs/api-flow-diagram.png)
+
+---
+
+## 📜 Licença
+
+Distribuído sob a licença **MIT** — veja o arquivo [LICENSE](https://github.com/nestjs/nest/blob/master/LICENSE) para mais detalhes.
