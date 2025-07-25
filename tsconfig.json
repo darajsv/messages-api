@@ -21,6 +21,7 @@
       "@config/*": ["src/config/*"],
       "@modules/*": ["src/modules/*"],
       "@shared/*": ["src/shared/*"]
-    }
+    },
+    "resolveJsonModule": true
   }
 }
