@@ -1,16 +1,11 @@
 import { INestApplication } from '@nestjs/common';
-import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 export class SwaggerConfig {
   static documentation = new DocumentBuilder()
-    .setTitle('Case Itau API')
+    .setTitle('Messages API')
     .setVersion('1.0')
-    .setContact(
-      'Dara Vieira',
-      'https://github.com/darajsv',
-      'darajsv@gmail.com',
-    )
-    .addBearerAuth()
+    .setContact('Dara Vieira', 'https://github.com/darajsv', 'darajsv@gmail.com')
     .build();
 
   setupSwagger(path: string, app: INestApplication<any>) {

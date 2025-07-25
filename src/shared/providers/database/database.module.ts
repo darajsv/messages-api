@@ -21,6 +21,7 @@ const databaseProviders: Provider[] = [
         repositories: {
           messageRepository: new MessageRepository(connection),
         },
+        connection,
       };
     },
   },
