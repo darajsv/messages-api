@@ -6,10 +6,11 @@ import { ListMessageResponseDTO } from './dtos/response.dto';
 import { plainToInstance } from 'class-transformer';
 import { MessageDTO } from '@shared/dtos/message.dto';
 import { Message } from '@shared/providers/database/entities';
+import { DATABASE_PROVIDER } from '@shared/constants';
 
 @Injectable()
 export class ListMessageService {
-  constructor(@Inject('DATABASE_PROVIDER') private db: IDatabaseProviders) {}
+  constructor(@Inject(DATABASE_PROVIDER) private db: IDatabaseProviders) {}
 
   async execute({
     sender,

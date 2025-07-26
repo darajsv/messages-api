@@ -3,10 +3,11 @@ import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import env from '@config/env';
 import { IDatabaseProviders } from './interfaces';
 import { MessageRepository } from './repositories';
+import { DATABASE_PROVIDER } from '@shared/constants';
 
 const databaseProviders: Provider[] = [
   {
-    provide: 'DATABASE_PROVIDER',
+    provide: DATABASE_PROVIDER,
     useFactory: (): IDatabaseProviders => {
       const connection = new DynamoDBClient({
         region: env().database.region,

@@ -76,7 +76,7 @@ export class MessageRepository {
     const nextCursor = result.LastEvaluatedKey ? encodeCursor(result.LastEvaluatedKey) : undefined;
 
     return {
-      items: (result.Items as Message[]) ?? [],
+      items: result.Items as Message[],
       nextCursor,
     };
   }
@@ -116,7 +116,7 @@ export class MessageRepository {
     );
 
     const items = pages
-      .flatMap((p) => p.Items ?? [])
+      .flatMap((p) => p.Items as Message[])
       .sort((a, b) => (b.sentAt as number) - (a.sentAt as number))
       .slice(0, limit);
 
