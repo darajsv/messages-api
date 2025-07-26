@@ -27,7 +27,15 @@ const e2e: Config = {
 
 const config: Config = {
   projects: [unit, e2e],
-  collectCoverageFrom: ['src/**/*.ts', '!src/main.ts'],
+  collectCoverageFrom: [
+    'src/**/*.ts',
+    '!src/main.ts',
+    '!src/**/*.spec.ts',
+    '!src/**/*.dto.ts',
+    '!src/config/**/*.ts',
+    '!src/app.module.ts',
+    '!src/shared/providers/database/database.module.ts',
+  ],
   coverageDirectory: 'coverage',
 };
 
