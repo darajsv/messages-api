@@ -1,13 +1,13 @@
-import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { DynamoDBClient, ScanCommand } from '@aws-sdk/client-dynamodb';
 import * as dotenv from 'dotenv';
 import { faker } from '@faker-js/faker';
-import { DynamoDBDocumentClient, BatchWriteCommand } from '@aws-sdk/lib-dynamodb';
+import { DynamoDBDocumentClient, BatchWriteCommand, ScanCommandInput } from '@aws-sdk/lib-dynamodb';
 
 dotenv.config();
 
 const TABLE_NAME = 'Messages';
 const REGION = process.env.REGION || 'sa-east-1';
-const URL = process.env.DB_ENDPOINT || 'http://localhost:8000';
+const URL = 'http://localhost:8000';
 
 const connection = new DynamoDBClient({
   region: REGION,
@@ -36,6 +36,18 @@ function generateSenders(count: number): string[] {
 }
 
 async function seedMessages() {
+  const scanParams: ScanCommandInput = {
+    TableName: TABLE_NAME,
+    Limit: 1,
+    ProjectionExpression: 'id',
+  };
+
+  const scanResult = await client.send(new ScanCommand(scanParams));
+  if ((scanResult.Count ?? 0) > 0) {
+    console.log(`✔️  Table "${TABLE_NAME}" already seeded – skipping`);
+    return;
+  }
+
   const totalItems = 1000;
   const senderList = generateSenders(20);
 
