@@ -18,7 +18,8 @@
     "test:unit": "jest --selectProjects unit",
     "test:e2e": "jest --selectProjects e2e",
     "create:dynamodb-table": "ts-node scripts/create-table.ts",
-    "seed:messages": "ts-node scripts/seed-messages.ts"
+    "seed:messages": "ts-node scripts/seed-messages.ts",
+    "dynamo:start": " node dist/scripts/create-table.js && node dist/scripts/seed-messages.js"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.848.0",
@@ -34,8 +35,11 @@
     "@nestjs/terminus": "^11.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
+    "dd-trace": "^5.61.1",
+    "nest-winston": "^1.10.2",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "winston": "^3.17.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",

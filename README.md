@@ -3,6 +3,7 @@
 ![Node.js](https://img.shields.io/badge/node-%3E%3D22.11.0-brightgreen)
 ![npm](https://img.shields.io/badge/npm-%3E%3D10.9-blue)
 ![DynamoDB](https://img.shields.io/badge/DynamoDB-local%20ready-orange)
+![Datadog](https://img.shields.io/badge/-DataDog-000?logo=datadog)
 ![License](https://img.shields.io/badge/license-MIT-lightgrey)
 
 Uma API em **NestJS** para gerenciamento de mensagens, com persistência em **Amazon DynamoDB** (ou DynamoDB Local via Docker) e documentação interativa gerada pelo **Swagger**.
@@ -21,11 +22,11 @@ Uma API em **NestJS** para gerenciamento de mensagens, com persistência em **Am
 
 ## 🖥️ Pré-requisitos
 
-| Ferramenta              | Versão mínima                               |
-| ----------------------- | ------------------------------------------- |
-| Node.js                 | **22.11.0**                                 |
-| npm                     | **10.9**                                    |
-| Docker / Docker Compose | _Opcional_ — para executar o DynamoDB Local |
+| Ferramenta              | Versão mínima                                         |
+| ----------------------- | ----------------------------------------------------- |
+| Node.js                 | **22.11.0**                                           |
+| npm                     | **10.9**                                              |
+| Docker / Docker Compose | _Opcional_ — para executar o DynamoDB + Datadog Local |
 
 ---
 
@@ -37,7 +38,7 @@ Uma API em **NestJS** para gerenciamento de mensagens, com persistência em **Am
 npm install
 ```
 
-### 2. (Opcional) Subir o DynamoDB Local
+### 2. (Opcional) Subir ambiente completo local (API + DynamoDB + Datadog Agent)
 
 ```bash
 docker compose -f docker-compose.yml up -d --build
@@ -77,6 +78,19 @@ DB_REGION=sa-east-1
 DB_ENDPOINT=http://localhost:8000
 DB_ACCESS_KEY_ID=
 DB_SECRET_ACCESS_KEY=
+
+DD_API_KEY=
+DD_SITE="datadoghq.com"
+
+DD_APM_ENABLED=true
+DD_APM_NON_LOCAL_TRAFFIC=true
+DD_LOGS_ENABLED=true
+DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
+DD_SERVICE=messages-api
+DD_ENV=dev
+DD_VERSION=1.0.0
+DD_TRACE_AGENT_HOSTNAME=dd-agent
+DD_LOGS_INJECTION=true
 ```
 
 ---

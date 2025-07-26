@@ -1,11 +1,11 @@
-import { DynamoDBClient, CreateTableCommand } from '@aws-sdk/client-dynamodb';
+import { DynamoDBClient, CreateTableCommand, DescribeTableCommand } from '@aws-sdk/client-dynamodb';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
 
 const TABLE_NAME = 'Messages';
 const REGION = process.env.DB_REGION || 'sa-east-1';
-const URL = process.env.DB_ENDPOINT || 'http://localhost:8000';
+const URL = 'http://localhost:8000';
 
 const client = new DynamoDBClient({
   region: REGION,
@@ -44,6 +44,14 @@ const command = new CreateTableCommand({
 
 async function run() {
   try {
+    try {
+      await client.send(new DescribeTableCommand({ TableName: TABLE_NAME }));
+      console.log(`✔️  Table "${TABLE_NAME}" already exists – skipping creation`);
+      return;
+    } catch (err: any) {
+      if (err.name !== 'ResourceNotFoundException') throw err;
+    }
+
     const response = await client.send(command);
     console.log('Table created:', response.TableDescription?.TableName);
   } catch (error) {
