@@ -1,6 +1,7 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import {
+  IsDateString,
   IsInt,
   IsOptional,
   IsString,
@@ -34,11 +35,13 @@ export class ListMessageRequestDTO {
   @ApiPropertyOptional()
   @IsOptional()
   @IsString()
+  @IsDateString()
   startDate: string;
 
   @ApiPropertyOptional()
   @IsOptional()
   @IsString()
+  @IsDateString()
   endDate: string;
 
   @ApiPropertyOptional()

@@ -15,15 +15,13 @@ export class HttpLoggerInterceptor implements NestInterceptor {
     const req = context.switchToHttp().getRequest();
     const res = context.switchToHttp().getResponse();
 
-    const rawRes: any = res.raw ?? res;
+    const rawRes: any = res.raw;
 
     const start = process.hrtime.bigint();
     const reqId = (req.headers['x-request-id'] as string) ?? uuidv4();
 
     if (typeof rawRes.setHeader === 'function') {
       rawRes.setHeader('x-request-id', reqId);
-    } else if (typeof res.header === 'function') {
-      res.header('x-request-id', reqId);
     }
 
     const onFinish = () => {
@@ -32,7 +30,7 @@ export class HttpLoggerInterceptor implements NestInterceptor {
       this.logger.info('http_request_completed', {
         request_id: reqId,
         method: req.method,
-        url: req.originalUrl ?? req.url,
+        url: req.originalUrl,
         status_code: res.statusCode,
         duration_ms: durationMs.toFixed(2),
         ip: req.ip,
@@ -49,7 +47,7 @@ export class HttpLoggerInterceptor implements NestInterceptor {
         this.logger.error('http_request_failed', {
           request_id: reqId,
           method: req.method,
-          url: req.originalUrl ?? req.url,
+          url: req.originalUrl,
           status_code: err?.status ?? 500,
           message: err?.message,
           stack: err?.stack,
