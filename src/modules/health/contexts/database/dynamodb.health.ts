@@ -3,11 +3,12 @@ import { Inject, Injectable } from '@nestjs/common';
 import { HealthIndicatorService } from '@nestjs/terminus';
 import { DynamoDBClient, ListTablesCommand } from '@aws-sdk/client-dynamodb';
 import { IDatabaseProviders } from '@shared/providers/database/interfaces';
+import { DATABASE_PROVIDER } from '@shared/constants';
 
 @Injectable()
 export class DynamoDBHealthIndicator {
   constructor(
-    @Inject('DATABASE_PROVIDER') private client: IDatabaseProviders,
+    @Inject(DATABASE_PROVIDER) private client: IDatabaseProviders,
     private readonly healthIndicatorService: HealthIndicatorService,
   ) {}
 
