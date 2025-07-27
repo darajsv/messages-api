@@ -6,6 +6,7 @@ export class SwaggerConfig {
     .setTitle('Messages API')
     .setVersion('1.0')
     .setContact('Dara Vieira', 'https://github.com/darajsv', 'darajsv@gmail.com')
+    .addBearerAuth()
     .build();
 
   setupSwagger(path: string, app: INestApplication<any>) {

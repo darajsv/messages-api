@@ -15,4 +15,8 @@ export default () => ({
       secretAccessKey: process.env.DB_SECRET_ACCESS_KEY || '',
     },
   },
+  auth0: {
+    audience: process.env.AUTH0_AUDIENCE || '',
+    issuerUrl: process.env.AUTH0_ISSUER_URL,
+  },
 });

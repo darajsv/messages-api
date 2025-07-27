@@ -1,5 +1,6 @@
 import { Controller, Get, Param, ParseUUIDPipe } from '@nestjs/common';
 import {
+  ApiBearerAuth,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
@@ -26,9 +27,8 @@ export class DetailMessageController {
     description: 'Message details',
     type: MessageDTO,
   })
-  async handle(
-    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
-  ): Promise<MessageDTO> {
+  @ApiBearerAuth()
+  async handle(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string): Promise<MessageDTO> {
     return this.detailMessageService.execute(id);
   }
 }
