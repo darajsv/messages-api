@@ -1,0 +1,2 @@
+export const DATABASE_PROVIDER = 'DATABASE_PROVIDER';
+export const WINSTON = 'WINSTON';

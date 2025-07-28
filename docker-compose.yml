@@ -1,0 +1,44 @@
+services:
+  datadog:
+    image: gcr.io/datadoghq/agent:7
+    container_name: dd-agent
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DD_LOGS_ENABLED: 'true'
+      DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL: 'true'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      - '8126:8126'
+
+  dynamodb:
+    image: amazon/dynamodb-local:latest
+    container_name: dynamodb
+    command: '-jar DynamoDBLocal.jar -sharedDb'
+    ports:
+      - '8000:8000'
+    volumes:
+      - dynamodb_data:/home/dynamodblocal/data
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: messages-api
+    depends_on:
+      - datadog
+      - dynamodb
+    env_file: .env
+    environment:
+      DD_LOGS_INJECTION: 'true'
+    ports:
+      - '3000:3000'
+
+volumes:
+  dynamodb_data:
+
+networks:
+  default:
+    external: true
+    name: nat
