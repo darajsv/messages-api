@@ -4,8 +4,7 @@ import { CreateMessageService } from '../create.service';
 import { CreateMessageController } from '../create.controller';
 import { CreateMessageRequestDTO } from '../dtos/request.dto';
 import { MessageStatus } from '@shared/providers/database/entities';
-import { faker } from '@faker-js/faker/.';
-import { randomUUID } from 'crypto';
+import { faker } from '@faker-js/faker';
 
 describe('CreateMessageController', () => {
   let controller: CreateMessageController;
