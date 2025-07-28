@@ -2,10 +2,11 @@ import { Injectable, NestInterceptor, ExecutionContext, CallHandler, Inject } fr
 import { Observable, catchError } from 'rxjs';
 import { Logger } from 'winston';
 import { v4 as uuidv4 } from 'uuid';
+import { WINSTON } from '@shared/constants';
 
 @Injectable()
 export class HttpLoggerInterceptor implements NestInterceptor {
-  constructor(@Inject('WINSTON') private readonly logger: Logger) {}
+  constructor(@Inject(WINSTON) private readonly logger: Logger) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     if (context.getType() !== 'http') {
