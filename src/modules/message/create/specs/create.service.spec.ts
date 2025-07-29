@@ -4,7 +4,7 @@ import { MessageDTO } from '@shared/dtos/message.dto';
 import { CreateMessageService } from '../create.service';
 import { DATABASE_PROVIDER } from '@shared/constants';
 import { CreateMessageRequestDTO } from '../dtos/request.dto';
-import { faker } from '@faker-js/faker/.';
+import { faker } from '@faker-js/faker';
 
 describe('CreateMessageService', () => {
   const createMock = jest.fn();

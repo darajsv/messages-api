@@ -5,7 +5,7 @@ import { RouterModule } from '@nestjs/core';
 
 import { AuthModule } from '../src/modules/auth/auth.module';
 import { LoginService } from '../src/modules/auth/contexts/login/login.service';
-import { faker } from '@faker-js/faker/.';
+import { faker } from '@faker-js/faker';
 
 const loginResponse = { accessToken: faker.internet.jwt(), expiresIn: 1, tokenType: ' Bearer' };
 

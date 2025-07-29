@@ -40,20 +40,70 @@ Uma API em **NestJS** para gerenciamento de mensagens, com persistência em **Am
 npm install
 ```
 
-### 2. (Opcional) Subir ambiente completo local (API + DynamoDB + Datadog Agent)
+### 2. Setar variaveis de ambiente
+
+Criar arquivo .env e inserir todas as variaveis necessarias -> ![./.env.example](.env.example)
+
+### 3. (Opcional) Subir ambiente completo local via docker-compose (API + DynamoDB + Datadog Agent)
 
 ```bash
 docker compose -f docker-compose.yml up -d --build
 ```
 
-### 3. Criar tabela e popular com dados de exemplo
+### 3.1 (Opcional) Subir ambiente separadamente via Docker
+
+#### DynamoDB
+
+```bash
+docker run -d \
+  --name dynamodb \
+  -p 8000:8000 \
+  -v dynamodb_data:/home/dynamodblocal/data \
+  amazon/dynamodb-local:latest \
+  -jar DynamoDBLocal.jar -sharedDb
+```
+
+#### DataDog
+
+```bash
+docker run -d \
+  --name dd-agent \
+  --restart unless-stopped \
+  --env-file .env \
+  -e DD_LOGS_ENABLED=true \
+  -e DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true \
+  -v /var/run/docker.sock:/var/run/docker.sock:ro \
+  -p 8126:8126 \
+  gcr.io/datadoghq/agent:7
+```
+
+#### Messages-API
+
+```bash
+docker build -t messages-api .
+```
+
+```bash
+docker run -d \
+  --name messages-api \
+  --env-file .env \
+  -e DD_LOGS_INJECTION=true \
+  -p 3000:3000 \
+  --link datadog \
+  --link dynamodb \
+  messages-api
+```
+
+### 4. Criar tabela e popular com dados de exemplo
 
 ```bash
 npm run create:dynamodb-table
 npm run seed:messages
 ```
 
----
+### 5. Incializar a API
+
+Com Docker a aplicacao ira iniciar sozinha com o comando na Dockerfile. Se rodar localmente utilize os comandos a seguir.
 
 ## 🏗️ Scripts NPM úteis
 
@@ -68,35 +118,32 @@ npm run seed:messages
 
 ---
 
-## 🔌 Variáveis de ambiente (exemplo)
+## 🔌 Variáveis de ambiente (descrição)
 
-```env
-PORT=3000
-NODE_ENV=development
-API_BASE_PATH=/api
-CORS_ORIGINS=https://meu-frontend.com,https://outro-frontend.com
+Exemplo disponivel em ![.env.example](.env.example)
 
-DB_REGION=sa-east-1
-DB_ENDPOINT=http://localhost:8000
-DB_ACCESS_KEY_ID=
-DB_SECRET_ACCESS_KEY=
-
-DD_API_KEY=
-DD_SITE="datadoghq.com"
-
-DD_APM_ENABLED=true
-DD_APM_NON_LOCAL_TRAFFIC=true
-DD_LOGS_ENABLED=true
-DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
-DD_SERVICE=messages-api
-DD_ENV=dev
-DD_VERSION=1.0.0
-DD_TRACE_AGENT_HOSTNAME=dd-agent
-DD_LOGS_INJECTION=true
-
-AUTH0_AUDIENCE=
-AUTH0_ISSUER_URL=
-```
+| Nome                                   | Descrição                                                      | Exemplo                                               |
+| -------------------------------------- | -------------------------------------------------------------- | ----------------------------------------------------- |
+| `PORT`                                 | Porta na qual a API será executada.                            | `3000`                                                |
+| `NODE_ENV`                             | Ambiente de execução da aplicação.                             | `development`, `production`, `test`                   |
+| `API_BASE_PATH`                        | Caminho base de todos os endpoints da API.                     | `/api`                                                |
+| `CORS_ORIGINS`                         | Lista de origens permitidas para CORS, separadas por vírgula.  | `https://meu-frontend.com,https://outro-frontend.com` |
+| `DB_REGION`                            | Região da AWS onde o DynamoDB está hospedado.                  | `sa-east-1`                                           |
+| `DB_ENDPOINT`                          | Endpoint da instância do DynamoDB (usado em ambientes locais). | `http://localhost:8000`                               |
+| `DB_ACCESS_KEY_ID`                     | Chave de acesso da AWS para autenticação no DynamoDB.          | `AKIAIOABC123EXAMPLE`                                 |
+| `DB_SECRET_ACCESS_KEY`                 | Chave secreta da AWS para autenticação no DynamoDB.            | `abc123xyz456EXAMPLEKEY`                              |
+| `DD_API_KEY`                           | Chave de API da Datadog para envio de métricas e logs.         | `abc123xyz456`                                        |
+| `DD_SITE`                              | Endpoint da Datadog.                                           | `datadoghq.com`                                       |
+| `DD_APM_ENABLED`                       | Ativa o rastreamento (APM) da Datadog.                         | `true`                                                |
+| `DD_APM_NON_LOCAL_TRAFFIC`             | Permite captura de tráfego não local para o APM.               | `true`                                                |
+| `DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL` | Ativa coleta de logs de todos os containers Docker.            | `true`                                                |
+| `DD_SERVICE`                           | Nome do serviço reportado à Datadog.                           | `messages-api`                                        |
+| `DD_ENV`                               | Ambiente do serviço para a Datadog.                            | `development`, `staging`, `production`                |
+| `DD_VERSION`                           | Versão do serviço reportado à Datadog.                         | `1.0.0`                                               |
+| `DD_TRACE_AGENT_HOSTNAME`              | Hostname do agente de rastreamento da Datadog.                 | `localhost`                                           |
+| `DD_LOGS_INJECTION`                    | Injeta automaticamente logs nos rastreamentos da Datadog.      | `true`                                                |
+| `AUTH0_AUDIENCE`                       | Identificador do público (audience) configurado no Auth0.      | `https://meu-dominio.auth0.com/api/v2/`               |
+| `AUTH0_ISSUER_URL`                     | URL do provedor de identidade do Auth0.                        | `https://meu-dominio.auth0.com/`                      |
 
 ---
 
