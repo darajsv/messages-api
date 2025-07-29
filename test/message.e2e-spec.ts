@@ -3,8 +3,8 @@ import { INestApplication } from '@nestjs/common';
 import { FastifyAdapter } from '@nestjs/platform-fastify';
 import { RouterModule } from '@nestjs/core';
 import { MessageModule } from '../src/modules/message/message.module';
-import { faker } from '@faker-js/faker/.';
 import { DatabaseModule } from '@shared/providers/database/database.module';
+import { faker } from '@faker-js/faker';
 
 function buildDbStub() {
   const inMemoryDB: any[] = [];
